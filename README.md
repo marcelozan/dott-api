@@ -8,19 +8,19 @@ Dott API is a web based solution that allows users to retrieve cycle and rides i
 The cycles have a start and an end, if the pickup is already done. The cycle’s start is defined by the date/time the deployment task is concluded. The cycle’s end is defined by the date/time the pickup task was created. The ride within a cycle are the rides where the ride’s start time is between the cycle’s start and cycle’s end times.
 
 ## API
-###Prerequisites
+### Prerequisites
 - Python 3.6
 - Flask Library
 - SQLite3
 
-###Business rules
+### Business rules
 The business requirements for the API were:
 Given a vehicle id or a QRCode, find the last cycle for the vehicle/QRcode, by the cycle start time and:
 - If the last cycle has no rides, return the last five cycles, by the deployment task created
 - If the last cycle has 5 or more rides, return the last 5 rides, within that cycle by the ride start date
 - If the last cycle has less than 5 rides, return the rides ordered by the ride’s start time, and complete the data, with the last cycles, ordered by deployment task created time, until reach 5 elements (rides + cycles)
 
-###API usage
+### API usage
 It was provided a initial database build with the ETL files output. The database file is on ./DottAPI/dott.db, if you want generate or reset the database, delete the .db file and run the following commands, from ./DottAPI folder:
 ```bash
 sqlite3 dott.db 
@@ -44,7 +44,7 @@ And some usage examples are:
 The API will return the data, as stated on the Business rules section.
 If no query parameter is provide or a vehicle
 
-###Technical Approach
+### Technical Approach
 The API reads a database with two tables:
 rides: Containing the rides data
 cycles: Containing the cycles data
@@ -67,22 +67,22 @@ For the tests, unittest was used
 
 **Performance issue**: One of the requirements was that the API supports more than 5000 hits per minute. Using sqlite3 I was not able to fulfil the requirement. Sqlite3 does not support the features described above. On a more robust RDBMS, the requirement can be achieved.
 
-###Scaling up for huge amount of data:
+### Scaling up for huge amount of data:
 If the amount of data grows exponentially, to a size that a non distribute RDBMS can handle, one could think about use a distributed noSQL database such as Hbase or Google’s Big Table. But, the actual data model needs to be adapted. Instead of two tables, the data model should have just one. The row key for the table should be vehicle_id + time_cycle_started. Also, the row in the table should have all the cycle’s data, and rides’ data. The API should query the table just by the vehicle and retrieve the most recent row. The API should apply the rules discussed earlier, and retrieve the data for the user.
 This approach works better on real huge amounts of data (such as few TBs). 
 If the volume is under one TB, I think the RDBMS approach is more suitable.
 I do not recommend using query engines such as BigQuery for this API, because the requirements are operational and restricted. Big Query is more suitable for analytical requirements. Queries done against BigQuery tables, has a little delay, while the engine is building the query plan and setup the job. For operational purposes this delay can impact heavily on the users experience. 
 
-##ETL
+## ETL
 The purpose of an ETL is to perform some actions on raw data, to clean it, enhance it, and load the treated data into a target system. ETLs are commonly used to load data on Data Warehouses and Data Lakes (Analytical and Support Decisions systems).
 
 The Dott API ETL has a final goal to generate files to be loaded on the API's database. Those files can also be loaded to an Data Warehouse or Data Lake.
 
-###Prerequisites
+### Prerequisites
 - Spark 2.4.x
 - Java JDK 8
 
-###ETL Assumptions
+### ETL Assumptions
 - The ETL is built on the top of some assumptions:
 - The scheduling will be deal on other application, such as Apache Airflow
 - The ETL will consume and process all the files, with the proper name in source path
@@ -90,7 +90,7 @@ The Dott API ETL has a final goal to generate files to be loaded on the API's da
 - With the assumption above, the ETL will process the source files and rewrite the last 7 days of data on target
 
 
-###Run the ETL
+### Run the ETL
 You can easily run the ETL by the following command from ./jar folder:
 ```bash
 spark-submit dott_2.11-0.1.jar
@@ -103,10 +103,10 @@ The ETL will run and appy the following steps on the source files:
 - Transform
 - Load
 
-###Extract
+### Extract
 In this phase, the application will get the source files path from ApplicationParameters trait, and will apply the schema for each file
 
-###DataClean
+### DataClean
 In this phase, the application will get the data extracted, and will perform some quality checks. The quality checks in place are:
 - Null values on every column from extracted data
 - Invalids latitude and longitude
@@ -120,7 +120,7 @@ The checks are performed, and the rows that do not pass are excluded from the pr
 
 Those checks are performed by the objects in Rules.scala, that can be evolved to a more complex data quality and data profile framework
 
-###Transform
+### Transform
 In this phase, the ETL will perform the actual business transformations on the cleaned data. The steps of the transformations are:
 - Rename the raw columns to a more meaningful business names
 - Calculate the rides metrics. For the distance it was used the Haversine formula
@@ -129,7 +129,7 @@ In this phase, the ETL will perform the actual business transformations on the c
 - Exclude anomalies
 - Aggregate the rows to calculate the cycle metrics
 - Output the cycles and rides
-####Anomalies
+#### Anomalies
 Since the cycle is defined by deployment -> rides -> pickup, some anomalies are excluded after the cycle is built:
 - Rows with no deployment associated, since deployments start a cycle
 - Deployments associated with more than one pickup; those rows represent two or more consecutive pickups with no deployment between them. The application keeps the rows with the most closed pickup from the deployment
@@ -138,10 +138,10 @@ Since the cycle is defined by deployment -> rides -> pickup, some anomalies are 
 
 Cycles with no pickup are not considered anomalies, because they are considered as open cycles
 
-###Load
+### Load
 In this phase, the application gets the transformed data and loads into two different folders, /target/cycle/ and /target/rides . The application loads the data in csv files
 
-###ETL Considerations
+### ETL Considerations
 The ETL development was done in Spark. Spark is a scalable processing engine, that can run in local environments and in distributed clusters. Also, it is portable, and can be run as is on ephemeral clusters such as Google DataProc.
 
 Spark has many APIs. For performance reasons, the DataFrame Scala API was chosen. This API uses Catalyst to build optimal query plans. Also it uses Tungsten, an off-heap data encoder. Tungsten, as an off-heap encoder, avoids JVM garbage collector to be triggered while processing the data.
@@ -171,7 +171,7 @@ Rides have the grain of a ride, and has all the metrics regarding the ride such 
 Cycles have the grain of deployment and has metrics regarding the cycle such as total amount, total distance, total rides, duration, deployment duration, pickup duration.
 In addition to the above metrics, the tables should have surrogate keys(SK) to join with the dimensions.
 The dimensions should be:
-Vehicle dimension
+- Vehicle dimension
 - Date dimension
 - Location dimension (at the grain of street as an example); this dimension only connects to rides fact table in the assignment
 - Customer dimension (data is not provided in the source files) ;this dimension only connects to rides fact table in the assignment
@@ -188,7 +188,7 @@ The data model for BigQuery is similar to the dimensional modeling, with little 
 - Instead of use two fact tables, the rides table can be modeled as a REPEATED RECORD inside the cycles fact table
 - Instead of using SK on facts and dimensions, the most used attributes in dimension tables needs to be materialized at cycles table, in RECORD columns
 
-##Scheduling and Orchestration
+## Scheduling and Orchestration
 No scheduler solution was built for the solution, but the steps that the scheduler must perform are described below
 
 For the scheduling solution, I assume we are going to implement the Analytical Solution, using BigQuery, and DataProc as the Cluster solution for the ETL.
@@ -204,7 +204,7 @@ This solution can be used in Apache Airflow or Google Cloud Composer. The steps 
 - task for load the ETL output files on BigQuery table
 - task for right a signal informing the DAG is finished
 
-##Deployment pipeline in GCP
+## Deployment pipeline in GCP
 The repository should be able to use a package managment system like Jenkins, with a CI/CD pipeline.
 
 Using the same assumptions of Scheduling, the steps for the pipeline are:
@@ -214,7 +214,7 @@ Using the same assumptions of Scheduling, the steps for the pipeline are:
 - copy the DAG files to Airflow Server
 - apply changes to the data model in BigQuery
 
-##Final Considerations
+## Final Considerations
 For the Analytical Solution, the best configuration could be:
 - Google File System as the primary storage
 - Parquet as the file format
