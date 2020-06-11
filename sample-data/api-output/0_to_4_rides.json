@@ -1,0 +1,49 @@
+[
+  {
+    "distance": "248.11483142199705",
+    "end_latitude": "48.87224",
+    "end_longitude": "2.301074",
+    "gross_amount": "4.1",
+    "ride_id": "dnirnhc0P2Fp9HWInOWy",
+    "start_latitude": "48.87001",
+    "start_longitude": "2.300956",
+    "time_ride_started": "2019-05-30T23:52:49.459+01:00"
+  },
+  {
+    "distance": "1852.8251975161577",
+    "end_latitude": "48.870132",
+    "end_longitude": "2.300919",
+    "gross_amount": "5.64",
+    "ride_id": "TE1kScdDXmM0L3kW5HFc",
+    "start_latitude": "48.871028",
+    "start_longitude": "2.326215",
+    "time_ride_started": "2019-05-30T23:10:24.804+01:00"
+  },
+  {
+    "distance": "476.0806970357944",
+    "end_latitude": "48.871015",
+    "end_longitude": "2.326248",
+    "gross_amount": "2.87",
+    "ride_id": "SuN3W6b60BOHJMQf5IsI",
+    "start_latitude": "48.870646",
+    "start_longitude": "2.332733",
+    "time_ride_started": "2019-05-29T22:37:20.363+01:00"
+  },
+  {
+    "distance": "494.5561808192783",
+    "end_latitude": "48.870637",
+    "end_longitude": "2.332781",
+    "gross_amount": "2.1",
+    "ride_id": "5yAXYCyk827zG6MEGDtx",
+    "start_latitude": "48.872131",
+    "start_longitude": "2.33915",
+    "time_ride_started": "2019-05-29T22:28:52.392+01:00"
+  },
+  {
+    "deployment_id": "xnV7knQkzRLKElsTQM98",
+    "time_cycle_started": "2019-05-29T19:28:50.743+01:00",
+    "time_deployment_created": "2019-05-28T21:37:48.830+01:00",
+    "total_amount": "14.709999999999999",
+    "total_distance": "3071.576906793228"
+  }
+]

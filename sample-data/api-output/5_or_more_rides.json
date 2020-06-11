@@ -1,0 +1,52 @@
+[
+  {
+    "distance": "1272.005048155702",
+    "end_latitude": "48.85520553588867",
+    "end_longitude": "2.265850067138672",
+    "gross_amount": "1.85",
+    "ride_id": "iVIU2x5sookKeK0Vfc0U",
+    "start_latitude": "48.865447998046875",
+    "start_longitude": "2.2735934257507324",
+    "time_ride_started": "2019-05-14T18:34:41.136+01:00"
+  },
+  {
+    "distance": "1.2936342956951168",
+    "end_latitude": "48.86540985107422",
+    "end_longitude": "2.2738165855407715",
+    "gross_amount": "1.02",
+    "ride_id": "WAt1CAdl1IGoiT4UKDSL",
+    "start_latitude": "48.86540222167969",
+    "start_longitude": "2.273803234100342",
+    "time_ride_started": "2019-05-14T08:58:18.974+01:00"
+  },
+  {
+    "distance": "5.361161773541194",
+    "end_latitude": "48.86541366577149",
+    "end_longitude": "2.2737832069396973",
+    "gross_amount": "1.18",
+    "ride_id": "HFGegQWzqcwi3tTIEbAn",
+    "start_latitude": "48.86545181274414",
+    "start_longitude": "2.273738384246826",
+    "time_ride_started": "2019-05-14T08:55:52.330+01:00"
+  },
+  {
+    "distance": "1274.0852672178503",
+    "end_latitude": "48.866180419921875",
+    "end_longitude": "2.2741332054138184",
+    "gross_amount": "1.97",
+    "ride_id": "hdkNS4ZvxucMH2RLxtrT",
+    "start_latitude": "48.85667037963867",
+    "start_longitude": "2.264418363571167",
+    "time_ride_started": "2019-05-13T09:55:35.194+01:00"
+  },
+  {
+    "distance": "482.13076197007547",
+    "end_latitude": "48.85655212402344",
+    "end_longitude": "2.264169931411743",
+    "gross_amount": "1.93",
+    "ride_id": "0pQmQKenceS7htjSkIjx",
+    "start_latitude": "48.85563278198242",
+    "start_longitude": "2.2706100940704346",
+    "time_ride_started": "2019-05-13T09:30:18.994+01:00"
+  }
+]
